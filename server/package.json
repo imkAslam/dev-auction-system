@@ -1,8 +1,8 @@
 {
-  "name": "home-assignment-task",
+  "name": "auction-be",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "kamran",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
