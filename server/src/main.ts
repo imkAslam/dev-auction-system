@@ -6,7 +6,9 @@ import { HttpStatus, Logger, ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const PORT: number = parseInt(process.env.PORT, 10) || 5000;
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || 'http://localhost',
+  });
   app.setGlobalPrefix('api/');
   // app.useGlobalPipes(new ValidationPipe());
   app.useGlobalPipes(

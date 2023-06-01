@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import InputField from "../../../../components/InputField/inputField";
 import Button from "../../../../components/Button/button";
 import Loader from "../../../../components/loader/loader";
-import { addAmount, placeBid } from "../../../../features/auction";
+import { placeBid } from "../../../../features/auction";
 import Toaster from "../../../../components/toaster/toaster";
 
 interface ModalProps {

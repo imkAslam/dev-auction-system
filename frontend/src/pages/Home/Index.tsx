@@ -5,6 +5,7 @@ import Table from "../../components/table/table";
 import Button from "../../components/Button/button";
 import moment from "moment";
 import BidModal from "./components/Modals/BidModal";
+import { ColumnDef } from "@tanstack/react-table";
 
 type AmountProps = {
   id: number | string;
@@ -22,6 +23,15 @@ type BidProps = {
   dueDate?: string;
   createdAt?: string;
   updatedAt?: string;
+};
+
+type TableColProps = {
+  id: string;
+  itemName: string;
+  startPrice: string;
+  currentPrice: string;
+  dueDate: string;
+  status: string;
 };
 
 const Home: React.FC = () => {
@@ -72,34 +82,38 @@ const Home: React.FC = () => {
       });
     }, 5000);
   }
+
   function refetchData() {
     fetchAmount();
     fetchAuction();
   }
-  console.log(bidDelay);
+
   useEffect(() => {
     fetchAmount();
     fetchAuction();
   }, []);
 
-  const columnsData = useMemo(
+  const cols = useMemo<ColumnDef<TableColProps>[]>(
     () => [
       {
-        Header: "Name",
-        accessor: "itemName",
+        header: "Name",
+        cell: (row) => row.renderValue(),
+        accessorKey: "itemName",
       },
       {
-        Header: "Start Price",
-        accessor: "startPrice",
+        header: "Start Price",
+        cell: (row) => row.renderValue(),
+        accessorKey: "startPrice",
       },
       {
-        Header: "Current Price",
-        accessor: "currentPrice",
+        header: "Current Price",
+        cell: (row) => row.renderValue(),
+        accessorKey: "currentPrice",
       },
       {
-        Header: "Duration",
-        accessor: "dueDate",
-        Cell: ({ row: { original } }: any) => {
+        header: "Duration",
+        accessorKey: "dueDate",
+        cell: ({ row: { original } }) => {
           const today = moment().format("HH:mm");
           const dueDate = moment(new Date(original?.dueDate)).format("HH:mm");
           const startMoment = moment(today, "HH:mm");
@@ -117,9 +131,9 @@ const Home: React.FC = () => {
         },
       },
       {
-        Header: "Bid",
-        accessor: "status",
-        Cell: ({ row: { original } }: any) => {
+        header: "Bid",
+        accessorKey: "status",
+        cell: ({ row: { original } }) => {
           const today = moment().format("HH:mm");
           const dueDate = moment(new Date(original?.dueDate)).format("HH:mm");
           const startMoment = moment(today, "HH:mm");
@@ -150,7 +164,6 @@ const Home: React.FC = () => {
     ],
     [auctionItems, bidDelay]
   );
-
   return (
     <div>
       <header className="">
@@ -168,11 +181,7 @@ const Home: React.FC = () => {
       </header>
       <div className="w-full h-full mt-4">
         <div className="px-4 py-2">
-          <Table
-            columns={columnsData}
-            loading={false}
-            data={auctionItems || []}
-          />
+          <Table columns={cols} loading={false} data={auctionItems || []} />
         </div>
       </div>
       <BidModal

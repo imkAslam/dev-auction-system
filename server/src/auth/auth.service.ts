@@ -49,6 +49,7 @@ export class AuthService {
     const result = this.jwtService.sign(payload, {
       secret: process.env.JWT_KEY,
     });
+
     return result;
   }
 }

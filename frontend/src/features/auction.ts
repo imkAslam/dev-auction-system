@@ -9,6 +9,7 @@ export const getAmount = async (): Promise<any> => {
     return error;
   }
 };
+
 export const addAmount = async (payload: object): Promise<any> => {
   try {
     const response = await api.post("/payment", payload);

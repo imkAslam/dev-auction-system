@@ -1,35 +1,20 @@
-/* eslint-disable */
-/* eslint-disable no-shadow */
-/* eslint-disable react/button-has-type */
-import React, { memo, useState } from "react";
-import { useTable, useSortBy, usePagination } from "react-table";
-import TableBody from "./tableBody";
-import TableHeader from "./tableHeader";
-import Loader from "../loader/loader";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { TableProps } from "./table.interface";
 
-interface TablePops {
-  loading: boolean;
-  data: any;
-  columns: any;
-  clickFun?: (value: any) => void;
-}
-
-const Table: React.FC<TablePops> = ({
-  loading,
-  columns,
+export const Table = <T extends object>({
   data,
-  clickFun,
-}: any) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-      },
-      useSortBy,
-      usePagination
-    );
-
+  columns,
+  loading = false,
+}: TableProps<T>) => {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <section className="my-2">
       <div
@@ -39,30 +24,43 @@ const Table: React.FC<TablePops> = ({
             : "overflow-auto rounded-lg"
         }
       >
-        {loading ? (
-          <Loader />
-        ) : (
-          <table
-            className="bg-white  border-[1px] border-[#F2F2F2] rounded-lg w-full whitespace-nowrap "
-            {...getTableProps()}
-          >
-            <thead className=" border-b-[1px] border-[#F2F2F2]">
-              <TableHeader headerGroups={headerGroups} />
-            </thead>
-            <tbody
-              className="border-t-[1px] divide-y divide-[#F2F2F2]"
-              {...getTableBodyProps()}
-            >
-              <TableBody
-                func={clickFun}
-                rowsData={rows}
-                prepareRow={prepareRow}
-              />
-            </tbody>
-          </table>
-        )}
+        <table className="bg-white  border-[1px] border-[#F2F2F2] rounded-lg w-full whitespace-nowrap">
+          <thead className=" border-b-[1px] border-[#F2F2F2]">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    className="p-4 ali text-md font-semibold text-black font-display tracking-wide text-left"
+                    key={header.id}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="border-t-[1px] divide-y divide-[#F2F2F2]">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    className="px-4 py-4 whitespace-nowrap text-base text-[#4D4D4D] font-display font-normal"
+                    key={cell.id}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );
 };
-export default memo(Table);
+export default Table;

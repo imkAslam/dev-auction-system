@@ -1,7 +1,7 @@
 import { RxCaretSort, RxCaretUp, RxCaretDown } from "react-icons/rx";
 import React from "react";
 
-const TableHeader: React.FC = ({ headerGroups }: any) => {
+const TableHeader: React.FC = (headerGroups: any) => {
   const content = headerGroups.map((headerGroup: any) => (
     <tr {...headerGroup.getHeaderGroupProps()}>
       {headerGroup.headers.map((column: any) =>
