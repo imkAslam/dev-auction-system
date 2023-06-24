@@ -1,2 +1,3 @@
 # dev-auction-system
-This is basic auction system, where user  can register ,login and place bids on item created by them.
+This is a basic auction system, where users  can register, login, and place bids on items created by them.
+This is still in progress and needs a lot to do.
